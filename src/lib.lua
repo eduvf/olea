@@ -143,3 +143,18 @@ function tree(x, y)
   game.map.wall[pos + game.map.width] = true
   game.map.wall[pos + 1 + game.map.width] = true
 end
+
+function serialize(t)
+  if type(t)=='table' then
+    local tab = {}
+    for k, v in pairs(t) do
+      table.insert(tab, '['..serialize(k)..']='..serialize(v))
+    end
+    return '{'..table.concat(tab, ',')..'}'
+  elseif type(t)=='string' then
+    return string.format('%q', t)
+  elseif type(t)=='number' or type(t)=='boolean' then
+    return tostring(t)
+  end
+  return 'nil'
+end

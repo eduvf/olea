@@ -69,6 +69,13 @@ function love.keypressed(_, scancode)
   if scancode == '2' then game.player.sprite = ID.CHARACTER_2 end
   if scancode == '3' then game.player.sprite = ID.CHARACTER_3 end
   if scancode == '4' then game.player.sprite = ID.CHARACTER_4 end
+
+  if love.keyboard.isScancodeDown('lctrl') and scancode == 's' then
+    ok, msg = love.filesystem.write('save.lua', serialize(game))
+    if not ok then
+      print('ERROR: ' .. msg)
+    end
+  end
 end
 
 function love.update(dt)
