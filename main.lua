@@ -31,6 +31,10 @@ function love.load()
   love.graphics.setDefaultFilter('nearest')
   require('src/lib')
 
+  init()
+end
+  
+function init()
   tree(5, 5)
   map()
 end
@@ -71,10 +75,18 @@ function love.keypressed(_, scancode)
   if scancode == '4' then game.player.sprite = ID.CHARACTER_4 end
 
   if love.keyboard.isScancodeDown('lctrl') and scancode == 's' then
-    ok, msg = love.filesystem.write('save.lua', serialize(game))
+    local ok, err = love.filesystem.write('save.lua', 'return '..serialize(game))
     if not ok then
-      print('ERROR: ' .. msg)
+      print('ERROR: ' .. err)
     end
+  end
+  if love.keyboard.isScancodeDown('lctrl') and scancode == 'o' then
+    local fn, err = love.filesystem.load('save.lua')
+    if type(fn) ~= 'function' then
+      print('ERROR: ' .. err)
+    end
+    game = fn()
+    init()
   end
 end
 
