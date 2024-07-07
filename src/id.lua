@@ -1,36 +1,25 @@
 ID = {
-  CHARACTER_1 = 1,
-  CHARACTER_2 = 1+8,
-  CHARACTER_3 = 1+8*2,
-  CHARACTER_4 = 1+8*3,
-  FLOWER_1 = 3,
-  FLOWER_2 = 4,
-  FLOWER_3 = 3+8,
-  FLOWER_4 = 4+8,
-  GRASS_1 = 5,
-  GRASS_2 = 6,
-  FLOOR_1 = 5+8,
-  FLOOR_2 = 6+8,
-  SOIL_DRY = 3+8*2,
-  SOIL_WET = 3+8*3,
-  ITEM_WHEAT = 7,
-  SEED_WHEAT = 8,
-  CROP_WHEAT = 4+8*2,
-  CROP_WHEAT_DONE = 8+8*2,
-  ITEM_TOMATO = 7+8,
-  SEED_TOMATO = 8+8,
-  CROP_TOMATO = 4+8*3,
-  CROP_TOMATO_DONE = 8+8*3,
-  TREE = 5+8*4,
-  CURSOR = 1+8*6
-}
-
-CROPS = {
-  [ID.SEED_WHEAT] = ID.CROP_WHEAT,
-  [ID.SEED_TOMATO] = ID.CROP_TOMATO
-}
-
-CROPS_DONE = {
-  [ID.CROP_WHEAT_DONE] = ID.ITEM_WHEAT,
-  [ID.CROP_TOMATO_DONE] = ID.ITEM_TOMATO
+  CHAR_1 = {1, 2},
+  CHAR_2 = {9, 10},
+  CHAR_3 = {17, 18},
+  NPC_1 = {25, 26},
+  FLOWERS = {3, 4, 11, 12},
+  FLOORS = {5, 6, 13, 14},
+  SOIL_DRY = 19,
+  SOIL_WET = 27,
+  CROPS = {
+    {7, 8, {20, 21, 22, 23, 24}},
+    {15, 16, {28, 29, 30, 31, 32}},
+    {55, 56, {}},
+    {63, 64, {}}
+  },
+  SIGN = 33,
+  WALL = 34,
+  DOOR = 35,
+  ROOF = 36,
+  POT = 41,
+  BED = 43,
+  CLOSET = 44,
+  TREES = {37, 39},
+  CURSOR = 49
 }
