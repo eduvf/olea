@@ -8,8 +8,8 @@ for y = 0, height - 1, 8 do
   end
 end
 
-function draw_sprite(n, x, y, scale, flip)
-  local scale = scale or 1
+function draw_sprite(n, x, y, flip, scale)
+  local scale = scale or game.scale
   local sx, ox = scale, 0
   if flip then
     sx, ox = -scale, 8

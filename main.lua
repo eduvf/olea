@@ -14,6 +14,13 @@ function love.load()
   player = create_actor(CHAR_1, 0, 0)
   print(player.spr)
   table.insert(game.actors, player)
+
+  local tree = create_actor(TREES[1], 4, 4, 0, 0, false, 2)
+  table.insert(game.actors, tree)
+
+  table.insert(game.actors, create_actor(CROPS[3][1], 4, 4, 0.5, 0, false))
+  table.insert(game.actors, create_actor(CROPS[3][1], 4, 4, 0, 0.5, false))
+  table.insert(game.actors, create_actor(CROPS[3][1], 4, 4, 1, 0.5, false))
 end
 
 function love.keypressed(_, ch)

@@ -5,7 +5,7 @@ function create_actor(spr, x, y, ox, oy, anim, size)
     y = y,
     ox = ox or 0,
     oy = oy or 0,
-    anim = anim or true,
+    anim = anim == nil,
     size = size or 1,
     flip = false,
   }
@@ -21,14 +21,24 @@ function update_actors(dt)
 end
 
 function draw_actors()
+  local tile = 8 * game.scale
+
   for a in all(game.actors) do
-    local spr = a.spr
-    local x = (a.x + a.ox) * 8 * game.scale
-    local y = (a.y + a.oy) * 8 * game.scale
+    local s = a.spr
+    local x = (a.x + a.ox) * tile
+    local y = (a.y + a.oy) * tile
 
     if a.anim then
-      spr = spr + math.floor(game.time % 2)
+      s = s + math.floor(game.time % 2)
     end
-    draw_sprite(spr, x, y, game.scale, a.flip)
+    
+    if a.size == 1 then
+      draw_sprite(s, x, y, a.flip)
+    elseif a.size == 2 then
+      draw_sprite(s, x, y)
+      draw_sprite(s + 1, x + tile, y)
+      draw_sprite(s + 8, x, y + tile)
+      draw_sprite(s + 9, x + tile, y + tile)
+    end
   end
 end
