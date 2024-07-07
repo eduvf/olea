@@ -4,6 +4,7 @@ function love.load()
   require('src/lib')
   require('src/gfx')
   require('src/act')
+  require('src/save')
 
   game = {
     time = 0,
@@ -12,12 +13,9 @@ function love.load()
   }
 
   player = create_actor(CHAR_1, 0, 0)
-  print(player.spr)
   table.insert(game.actors, player)
 
-  local tree = create_actor(TREES[1], 4, 4, 0, 0, false, 2)
-  table.insert(game.actors, tree)
-
+  table.insert(game.actors, create_actor(TREES[1], 4, 4, 0, 0, false, 2))
   table.insert(game.actors, create_actor(CROPS[3][1], 4, 4, 0.5, 0, false))
   table.insert(game.actors, create_actor(CROPS[3][1], 4, 4, 0, 0.5, false))
   table.insert(game.actors, create_actor(CROPS[3][1], 4, 4, 1, 0.5, false))
@@ -45,6 +43,14 @@ function love.keypressed(_, ch)
   if ch == '2' then player.spr = CHAR_2 end
   if ch == '3' then player.spr = CHAR_3 end
   if ch == '4' then player.spr = NPC_1 end
+
+  if love.keyboard.isScancodeDown('lctrl') then
+    if ch == 's' then
+      save()
+    elseif ch == 'l' then
+      load()
+    end
+  end
 end
 
 function love.update(dt)
