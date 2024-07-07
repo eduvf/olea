@@ -8,7 +8,20 @@ function create_actor(spr, x, y, ox, oy, anim, size)
     anim = anim == nil,
     size = size or 1,
     flip = false,
+    solid = true
   }
+end
+
+function check_collision(act, x, y)
+  for a in all(game.actors) do
+    if a ~= act and a.solid then
+      x = act.x + x
+      y = act.y + y
+      local check_x = a.x == x - (x % a.size)
+      local check_y = a.y == y - (y % a.size)
+      return check_x and check_y
+    end
+  end
 end
 
 function update_actors(dt)

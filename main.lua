@@ -30,10 +30,15 @@ function love.keypressed(_, ch)
   if ch == 'a' or ch == 'left' then x = x - 1 end
   if ch == 'd' or ch == 'right' then x = x + 1 end
 
-  player.x = player.x + x
-  player.y = player.y + y
-  player.ox = player.ox - x
-  player.oy = player.oy - y
+  if check_collision(player, x, y) then
+    player.ox = player.ox + x / 2
+    player.oy = player.oy + y / 2
+  else
+    player.x = player.x + x
+    player.y = player.y + y
+    player.ox = player.ox - x
+    player.oy = player.oy - y
+  end
   player.flip = x == 0 and player.flip or x < 0
 
   if ch == '1' then player.spr = CHAR_1 end
