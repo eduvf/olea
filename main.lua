@@ -28,6 +28,11 @@ function love.keypressed(_, ch)
   player.ox = player.ox - x
   player.oy = player.oy - y
   player.flip = x == 0 and player.flip or x < 0
+
+  if ch == '1' then player.spr = CHAR_1 end
+  if ch == '2' then player.spr = CHAR_2 end
+  if ch == '3' then player.spr = CHAR_3 end
+  if ch == '4' then player.spr = NPC_1 end
 end
 
 function love.update(dt)
