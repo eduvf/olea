@@ -25,11 +25,15 @@ function love.keypressed(_, ch)
 
   player.x = player.x + x
   player.y = player.y + y
+  player.ox = player.ox - x
+  player.oy = player.oy - y
   player.flip = x == 0 and player.flip or x < 0
 end
 
 function love.update(dt)
   game.time = game.time + dt
+
+  update_actors(dt)
 end
 
 function love.draw()
