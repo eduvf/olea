@@ -6,7 +6,11 @@ function love.load()
   require('src/act')
   require('src/save')
 
+  win = {}
+  win.w, win.h = love.graphics.getDimensions()
+
   game = {
+    cam = {x = win.w / 2, y = win.h / 2},
     time = 0,
     scale = 6,
     actors = {}
@@ -19,6 +23,10 @@ function love.load()
   table.insert(game.actors, create_actor(CROPS[3][1], 4, 4, 0.5, 0, false))
   table.insert(game.actors, create_actor(CROPS[3][1], 4, 4, 0, 0.5, false))
   table.insert(game.actors, create_actor(CROPS[3][1], 4, 4, 1, 0.5, false))
+end
+
+function love.resize()
+  win.w, win.h = love.graphics.getDimensions()
 end
 
 function love.keypressed(_, ch)
@@ -57,8 +65,18 @@ function love.update(dt)
   game.time = game.time + dt
 
   update_actors(dt)
+
+  local tile = 8 * game.scale
+  local diff_x = win.w / 2 - tile / 2 - player.x * tile - game.cam.x
+  local diff_y = win.h / 2 - tile / 2 - player.y * tile - game.cam.y
+  game.cam.x = game.cam.x + diff_x * 2 * dt
+  game.cam.y = game.cam.y + diff_y * 2 * dt 
 end
 
 function love.draw()
+  love.graphics.translate(game.cam.x, game.cam.y)
+
   draw_actors()
+
+  love.graphics.origin()
 end
