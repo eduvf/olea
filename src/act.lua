@@ -8,8 +8,18 @@ function create_actor(spr, x, y, ox, oy, anim, size)
     anim = anim == nil,
     size = size or 1,
     flip = false,
-    solid = true
+    solid = true,
+    links = {}
   }
+end
+
+function add_actor(act)
+  table.insert(game.actors, act)
+end
+
+function add_link_actor(parent_act, act)
+  add_actor(act)
+  table.insert(parent_act.links, act)
 end
 
 function check_collision(act, x, y)
@@ -19,7 +29,9 @@ function check_collision(act, x, y)
       y = act.y + y
       local check_x = a.x == x - (x % a.size)
       local check_y = a.y == y - (y % a.size)
-      return check_x and check_y
+      if check_x and check_y then
+        return a
+      end
     end
   end
 end

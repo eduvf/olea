@@ -17,12 +17,14 @@ function love.load()
   }
 
   player = create_actor(CHAR_1, 0, 0)
-  table.insert(game.actors, player)
+  add_actor(player)
 
-  table.insert(game.actors, create_actor(TREES[1], 4, 4, 0, 0, false, 2))
-  table.insert(game.actors, create_actor(CROPS[3][1], 4, 4, 0.5, 0, false))
-  table.insert(game.actors, create_actor(CROPS[3][1], 4, 4, 0, 0.5, false))
-  table.insert(game.actors, create_actor(CROPS[3][1], 4, 4, 1, 0.5, false))
+  local tree = create_actor(TREES[1], 4, 4, 0, 0, false, 2)
+  add_actor(tree)
+
+  add_link_actor(tree, create_actor(CROPS[3][1], 4, 4, 0.5, 0, false))
+  add_link_actor(tree, create_actor(CROPS[3][1], 4, 4, 0, 0.5, false))
+  add_link_actor(tree, create_actor(CROPS[3][1], 4, 4, 1, 0.5, false))
 end
 
 function love.resize()
@@ -36,9 +38,11 @@ function love.keypressed(_, ch)
   if ch == 'a' or ch == 'left' then x = x - 1 end
   if ch == 'd' or ch == 'right' then x = x + 1 end
 
-  if check_collision(player, x, y) then
+  local act = check_collision(player, x, y)
+  if act ~= nil then
     player.ox = player.ox + x / 2
     player.oy = player.oy + y / 2
+    print(#act.links)
   else
     player.x = player.x + x
     player.y = player.y + y
