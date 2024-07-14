@@ -6,6 +6,7 @@ function create_actor(spr, x, y, ox, oy, anim, size)
     ox = ox or 0,
     oy = oy or 0,
     anim = anim == nil,
+    move = anim == nil,
     size = size or 1,
     flip = false,
     solid = true,
@@ -38,7 +39,7 @@ end
 
 function update_actors(dt)
   for a in all(game.actors) do
-    if a.anim then
+    if a.move then
       a.ox = a.ox * (0.95 - dt)
       a.oy = a.oy * (0.95 - dt)
     end

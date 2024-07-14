@@ -5,6 +5,7 @@ function love.load()
   require('src/gfx')
   require('src/act')
   require('src/save')
+  require('src/farm')
 
   win = {}
   win.w, win.h = love.graphics.getDimensions()
@@ -42,7 +43,9 @@ function love.keypressed(_, ch)
   if act ~= nil then
     player.ox = player.ox + x / 2
     player.oy = player.oy + y / 2
-    print(#act.links)
+    if act.spr == TREES[1] then
+      harvest_tree(act)
+    end
   else
     player.x = player.x + x
     player.y = player.y + y
