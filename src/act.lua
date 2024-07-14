@@ -7,6 +7,7 @@ function create_actor(spr, x, y, ox, oy, anim, size)
     oy = oy or 0,
     anim = anim == nil,
     move = anim == nil,
+    die_on_stop = false,
     size = size or 1,
     flip = false,
     solid = true,
@@ -26,8 +27,8 @@ end
 function check_collision(act, x, y)
   for a in all(game.actors) do
     if a ~= act and a.solid then
-      x = act.x + x
-      y = act.y + y
+      local x = act.x + x
+      local y = act.y + y
       local check_x = a.x == x - (x % a.size)
       local check_y = a.y == y - (y % a.size)
       if check_x and check_y then
@@ -38,10 +39,14 @@ function check_collision(act, x, y)
 end
 
 function update_actors(dt)
-  for a in all(game.actors) do
+  for i, a in ipairs(game.actors) do
     if a.move then
       a.ox = a.ox * (0.95 - dt)
       a.oy = a.oy * (0.95 - dt)
+
+      if a.die_on_stop and a.ox + a.oy < 0.01 then
+        table.remove(game.actors, i)
+      end
     end
   end
 end

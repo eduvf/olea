@@ -20,12 +20,26 @@ function love.load()
   player = create_actor(CHAR_1, 0, 0)
   add_actor(player)
 
-  local tree = create_actor(TREES[1], 4, 4, 0, 0, false, 2)
-  add_actor(tree)
+  local tree_1 = create_actor(TREES[1], 0, 4, 0, 0, false, 2)
+  add_actor(tree_1)
 
-  add_link_actor(tree, create_actor(CROPS[3][1], 4, 4, 0.5, 0, false))
-  add_link_actor(tree, create_actor(CROPS[3][1], 4, 4, 0, 0.5, false))
-  add_link_actor(tree, create_actor(CROPS[3][1], 4, 4, 1, 0.5, false))
+  add_link_actor(tree_1, create_actor(CROPS[3][1], 0, 4, 0.5, 0, false))
+  add_link_actor(tree_1, create_actor(CROPS[3][1], 0, 4, 0, 0.5, false))
+  add_link_actor(tree_1, create_actor(CROPS[3][1], 0, 4, 1, 0.5, false))
+
+  local tree_2 = create_actor(TREES[1], 4, 4, 0, 0, false, 2)
+  add_actor(tree_2)
+
+  add_link_actor(tree_2, create_actor(CROPS[2][1], 4, 4, 0.5, 0, false))
+  add_link_actor(tree_2, create_actor(CROPS[2][1], 4, 4, 0, 0.5, false))
+  add_link_actor(tree_2, create_actor(CROPS[2][1], 4, 4, 1, 0.5, false))
+
+  local tree_3 = create_actor(TREES[2], 8, 4, 0, 0, false, 2)
+  add_actor(tree_3)
+
+  add_link_actor(tree_3, create_actor(CROPS[4][1], 8, 4, 0.5, 0, false))
+  add_link_actor(tree_3, create_actor(CROPS[4][1], 8, 4, 0, 0.5, false))
+  add_link_actor(tree_3, create_actor(CROPS[4][1], 8, 4, 1, 0.5, false))
 end
 
 function love.resize()
@@ -43,7 +57,7 @@ function love.keypressed(_, ch)
   if act ~= nil then
     player.ox = player.ox + x / 2
     player.oy = player.oy + y / 2
-    if act.spr == TREES[1] then
+    if act.spr == TREES[1] or act.spr == TREES[2] then
       harvest_tree(act)
     end
   else
