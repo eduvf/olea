@@ -47,6 +47,8 @@ function love.resize()
 end
 
 function love.keypressed(_, ch)
+  if ch == 'r' then love.event.push('quit', 'restart') end
+
   local x, y = 0, 0
   if ch == 'w' or ch == 'up' then y = y - 1 end
   if ch == 's' or ch == 'down' then y = y + 1 end
