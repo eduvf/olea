@@ -44,7 +44,7 @@ function update_actors(dt)
       a.ox = a.ox * (0.95 - dt)
       a.oy = a.oy * (0.95 - dt)
 
-      if a.die_on_stop and a.ox + a.oy < 0.01 then
+      if a.die_on_stop and math.abs(a.ox) + math.abs(a.oy) < 0.01 then
         table.remove(game.actors, i)
       end
     end
