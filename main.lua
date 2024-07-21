@@ -75,7 +75,14 @@ function love.keypressed(_, ch)
   player.flip = x == 0 and player.flip or x < 0
 
   if ch == 'space' then
-    set_into_map(SOIL_DRY, player.x + 1, player.y + 1)
+    local x, y = player.x + 1, player.y + 1
+    local id = get_from_map(x, y)
+    
+    if id == SOIL_DRY then
+      set_into_map(SOIL_WET, x, y)
+    else
+      set_into_map(SOIL_DRY, x, y)
+    end
   end
 
   if ch == '1' then player.spr = CHAR_1 end
