@@ -17,6 +17,15 @@ end
 
 function add_actor(act)
   table.insert(game.actors, act)
+
+  if act.move then return end
+  
+  game.map[act.x + 1][act.y + 1] = 0
+  if act.size == 2 then
+    game.map[act.x + 2][act.y + 1] = 0
+    game.map[act.x + 1][act.y + 2] = 0
+    game.map[act.x + 2][act.y + 2] = 0
+  end
 end
 
 function add_link_actor(parent_act, act)

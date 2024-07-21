@@ -18,9 +18,11 @@ end
 function draw_map()
   for x, row in ipairs(game.map) do
     for y, tile in ipairs(row) do
-      local x = (x - 1) * 8 * game.scale
-      local y = (y - 1) * 8 * game.scale
-      draw_sprite(tile, x, y)
+      if tile > 0 then
+        local x = (x - 1) * 8 * game.scale
+        local y = (y - 1) * 8 * game.scale
+        draw_sprite(tile, x, y)
+      end
     end
   end
 end
