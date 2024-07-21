@@ -3,6 +3,7 @@ function love.load()
   require('src/id')
   require('src/lib')
   require('src/gfx')
+  require('src/map')
   require('src/act')
   require('src/save')
   require('src/farm')
@@ -12,10 +13,13 @@ function love.load()
 
   game = {
     cam = {x = win.w / 2, y = win.h / 2},
+    map = {},
     time = 0,
     scale = 6,
     actors = {}
   }
+
+  generate_map(win.w / 8 / game.scale, win.h / 8 / game.scale)
 
   player = create_actor(CHAR_1, 0, 0)
   add_actor(player)
@@ -99,6 +103,7 @@ end
 function love.draw()
   love.graphics.translate(game.cam.x, game.cam.y)
 
+  draw_map()
   draw_actors()
 
   love.graphics.origin()

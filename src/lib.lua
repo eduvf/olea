@@ -7,3 +7,7 @@ function all(t)
     end
   end
 end
+
+function random(t)
+  return t[love.math.random(#t)]
+end
