@@ -8,6 +8,13 @@ function generate_map(w, h)
   end
 end
 
+function set_into_map(id, x, y)
+  if not in_range(x, 1, #game.map) then return end
+  if not in_range(y, 1, #game.map[1]) then return end
+
+  game.map[x][y] = id
+end
+
 function draw_map()
   for x, row in ipairs(game.map) do
     for y, tile in ipairs(row) do

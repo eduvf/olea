@@ -11,3 +11,7 @@ end
 function random(t)
   return t[love.math.random(#t)]
 end
+
+function in_range(n, min, max)
+  return min <= n and n <= max
+end
