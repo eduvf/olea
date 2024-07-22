@@ -1,34 +1,27 @@
 function generate_map()
   for x = 1, game.map.w do
     game.map.ground[x] = {}
+    game.map.crops[x] = {}
+    game.map.wall[x] = {}
     for y = 1, game.map.h do
       game.map.ground[x][y] = random(GROUNDS)
+      game.map.crops[x][y] = 0
+      game.map.wall[x][y] = false
     end
   end
 end
 
-function get_from_map_ground(x, y)
-  if not in_range(x, 1, game.map.w) then return end
-  if not in_range(y, 1, game.map.h) then return end
-
-  return game.map.ground[x][y]
-end
-
-function set_into_map_ground(id, x, y)
-  if not in_range(x, 1, game.map.w) then return end
-  if not in_range(y, 1, game.map.h) then return end
-
-  game.map.ground[x][y] = id
-end
-
 function draw_map()
-  for x, row in ipairs(game.map.ground) do
-    for y, tile in ipairs(row) do
-      if tile > 0 then
-        local x = (x - 1) * 8 * game.scale
-        local y = (y - 1) * 8 * game.scale
-        draw_sprite(tile, x, y)
-      end
+  for x = 1, game.map.w do
+    for y = 1, game.map.h do
+      local g = game.map.ground[x][y]
+      local c = game.map.crops[x][y]
+
+      local x = (x - 1) * 8 * game.scale
+      local y = (y - 1) * 8 * game.scale
+
+      if g > 0 then draw_sprite(g, x, y) end
+      if c > 0 then draw_sprite(c, x, y) end
     end
   end
 end

@@ -81,15 +81,10 @@ function love.keypressed(_, ch)
   player.flip = x == 0 and player.flip or x < 0
 
   if ch == 'space' then
-    local x, y = player.x + 1, player.y + 1
-    local id = get_from_map_ground(x, y)
-    
-    if id == SOIL_DRY then
-      set_into_map_ground(SOIL_WET, x, y)
-    else
-      set_into_map_ground(SOIL_DRY, x, y)
-    end
+    farm_action(player.x + 1, player.y + 1)
   end
+
+  if ch == 'n' then next_day() end
 
   if ch == '1' then player.spr = CHAR_1 end
   if ch == '2' then player.spr = CHAR_2 end
