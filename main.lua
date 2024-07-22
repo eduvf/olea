@@ -1,118 +1,122 @@
 function love.load()
+  love.graphics.setDefaultFilter('nearest')
   require('src/id')
-  
-  game = {
-    time = 0,
-    scale = 6,
-    player = {
-      sprite = 1,
-      x = 0, y = 0,
-      px = 0, py = 0,
-      flip = false,
-      inv = {ID.SEED_WHEAT, ID.SEED_WHEAT, ID.SEED_TOMATO, ID.SEED_TOMATO},
-      inv_cur = 1,
-      show_inv = false
-    },
-    map = {
-      canvas = nil,
-      width = 16,
-      height = 9,
+  require('src/lib')
+  require('src/gfx')
+  require('src/map')
+  require('src/act')
+  require('src/save')
+  require('src/farm')
 
+  win = {}
+  win.w, win.h = love.graphics.getDimensions()
+
+  game = {
+    cam = {x = win.w / 2, y = win.h / 2},
+    map = {
+      w = win.w / 8 / 6,
+      h = win.h / 8 / 6,
       ground = {},
       crops = {},
       wall = {}
     },
-    cam = {
-      x = 0, y = 0
-    },
-    popup = {}
+    time = 0,
+    scale = 6,
+    actors = {}
   }
 
-  love.graphics.setDefaultFilter('nearest')
-  require('src/lib')
+  generate_map()
 
-  init()
-end
-  
-function init()
-  tree(5, 5)
-  map()
+  player = create_actor(CHAR_1, 0, 0)
+  add_actor(player)
+
+  local tree_1 = create_actor(TREES[1], 0, 4, 0, 0, false, 2)
+  add_actor(tree_1)
+
+  add_link_actor(tree_1, create_actor(CROPS[2].ITEM, 0, 4, 0.5, 0, false))
+  add_link_actor(tree_1, create_actor(CROPS[2].ITEM, 0, 4, 0, 0.5, false))
+  add_link_actor(tree_1, create_actor(CROPS[2].ITEM, 0, 4, 1, 0.5, false))
+
+  local tree_2 = create_actor(TREES[1], 4, 4, 0, 0, false, 2)
+  add_actor(tree_2)
+
+  add_link_actor(tree_2, create_actor(CROPS[2].ITEM, 4, 4, 0.5, 0, false))
+  add_link_actor(tree_2, create_actor(CROPS[2].ITEM, 4, 4, 0, 0.5, false))
+  add_link_actor(tree_2, create_actor(CROPS[2].ITEM, 4, 4, 1, 0.5, false))
+
+  local tree_3 = create_actor(TREES[2], 8, 4, 0, 0, false, 2)
+  add_actor(tree_3)
+
+  add_link_actor(tree_3, create_actor(CROPS[2].ITEM, 8, 4, 0.5, 0, false))
+  add_link_actor(tree_3, create_actor(CROPS[2].ITEM, 8, 4, 0, 0.5, false))
+  add_link_actor(tree_3, create_actor(CROPS[2].ITEM, 8, 4, 1, 0.5, false))
 end
 
-function love.keypressed(_, scancode)
+function love.resize()
+  win.w, win.h = love.graphics.getDimensions()
+end
+
+function love.keypressed(_, ch)
+  if ch == 'r' then love.event.push('quit', 'restart') end
+
   local x, y = 0, 0
-  if scancode == 'w' or scancode == 'up' then y = y - 1 end
-  if scancode == 's' or scancode == 'down' then y = y + 1 end
-  if scancode == 'a' or scancode == 'left' then x = x - 1 end
-  if scancode == 'd' or scancode == 'right' then x = x + 1 end
-  
-  if not game.player.show_inv then
-    game.player.flip = x == 0 and game.player.flip or x < 0
-    local new_x = game.player.x + x
-    local new_y = game.player.y + y
-    if game.map.wall[(new_x + new_y * game.map.width) + 1] then
-      game.player.px = game.player.px + x * 4 * game.scale
-      game.player.py = game.player.py + y * 4 * game.scale
-    else
-      game.player.x = new_x
-      game.player.y = new_y
-    end
+  if ch == 'w' or ch == 'up' then y = y - 1 end
+  if ch == 's' or ch == 'down' then y = y + 1 end
+  if ch == 'a' or ch == 'left' then x = x - 1 end
+  if ch == 'd' or ch == 'right' then x = x + 1 end
 
-    if scancode == 'space' then action() end
+  local act = check_collision(player, x, y)
+  if act ~= nil then
+    player.ox = player.ox + x / 2
+    player.oy = player.oy + y / 2
+    if act.spr == TREES[1] or act.spr == TREES[2] then
+      harvest_tree(act)
+    end
   else
-    if #game.player.inv > 0 then
-      game.player.inv_cur = (((game.player.inv_cur-1) + x) % #game.player.inv) + 1
-    end
+    player.x = player.x + x
+    player.y = player.y + y
+    player.ox = player.ox - x
+    player.oy = player.oy - y
   end
-  if scancode == 'n' then day() end
+  player.flip = x == 0 and player.flip or x < 0
 
-  if scancode == 'p' then popup(ID.ITEM_WHEAT) end
-  if scancode == 'i' then game.player.show_inv = not game.player.show_inv end
-
-  if scancode == '1' then game.player.sprite = ID.CHARACTER_1 end
-  if scancode == '2' then game.player.sprite = ID.CHARACTER_2 end
-  if scancode == '3' then game.player.sprite = ID.CHARACTER_3 end
-  if scancode == '4' then game.player.sprite = ID.CHARACTER_4 end
-
-  if love.keyboard.isScancodeDown('lctrl') and scancode == 's' then
-    local ok, err = love.filesystem.write('save.lua', 'return '..serialize(game))
-    if not ok then
-      print('ERROR: ' .. err)
-    end
+  if ch == 'space' then
+    farm_action(player.x + 1, player.y + 1)
   end
-  if love.keyboard.isScancodeDown('lctrl') and scancode == 'o' then
-    local fn, err = love.filesystem.load('save.lua')
-    if type(fn) ~= 'function' then
-      print('ERROR: ' .. err)
+
+  if ch == 'n' then next_day() end
+
+  if ch == '1' then player.spr = CHAR_1 end
+  if ch == '2' then player.spr = CHAR_2 end
+  if ch == '3' then player.spr = CHAR_3 end
+  if ch == '4' then player.spr = NPC_1 end
+
+  if love.keyboard.isScancodeDown('lctrl') then
+    if ch == 's' then
+      save()
+    elseif ch == 'l' then
+      load()
     end
-    game = fn()
-    init()
   end
 end
 
 function love.update(dt)
   game.time = game.time + dt
 
-  game.player.px = game.player.px + ((game.player.x * 8 * game.scale) - game.player.px) * 8 * dt
-  game.player.py = game.player.py + ((game.player.y * 8 * game.scale) - game.player.py) * 8 * dt
+  update_actors(dt)
 
-  local center_x = math.floor(love.graphics.getWidth() / 2) - 8 * game.scale
-  local center_y = math.floor(love.graphics.getHeight() / 2) - 8 * game.scale
-  game.cam.x = game.cam.x + (center_x - game.player.px - game.cam.x) * 2 * dt
-  game.cam.y = game.cam.y + (center_y - game.player.py - game.cam.y) * 2 * dt
-
-  update_popup(dt)
+  local tile = 8 * game.scale
+  local diff_x = win.w / 2 - tile / 2 - player.x * tile - game.cam.x
+  local diff_y = win.h / 2 - tile / 2 - player.y * tile - game.cam.y
+  game.cam.x = game.cam.x + diff_x * 2 * dt
+  game.cam.y = game.cam.y + diff_y * 2 * dt 
 end
 
 function love.draw()
   love.graphics.translate(game.cam.x, game.cam.y)
-  love.graphics.draw(game.map.canvas, 0, 0, 0, game.scale)
 
-  local n = game.player.sprite + math.floor(game.time % 2)
-  sprite(n, game.player.px, game.player.py, game.scale, game.player.flip)
-
-  draw_popup()
+  draw_map()
+  draw_actors()
 
   love.graphics.origin()
-  if game.player.show_inv then draw_inventory() end
 end
