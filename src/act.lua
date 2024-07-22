@@ -20,11 +20,11 @@ function add_actor(act)
 
   if act.move then return end
   
-  game.map[act.x + 1][act.y + 1] = 0
+  game.map.ground[act.x + 1][act.y + 1] = 0
   if act.size == 2 then
-    game.map[act.x + 2][act.y + 1] = 0
-    game.map[act.x + 1][act.y + 2] = 0
-    game.map[act.x + 2][act.y + 2] = 0
+    game.map.ground[act.x + 2][act.y + 1] = 0
+    game.map.ground[act.x + 1][act.y + 2] = 0
+    game.map.ground[act.x + 2][act.y + 2] = 0
   end
 end
 

@@ -3,14 +3,12 @@ CHAR_2 = 9
 CHAR_3 = 17
 NPC_1 = 25
 FLOWERS = {3, 4, 11, 12}
-FLOORS = {5, 6, 13, 14}
+GROUNDS = {5, 6, 13, 14}
 SOIL_DRY = 19
 SOIL_WET = 27
 CROPS = {
-  {7, 8, {20, 21, 22, 23, 24}},
-  {15, 16, {28, 29, 30, 31, 32}},
-  {55, 56, {}},
-  {63, 64, {}}
+  {ITEM = 7, SEED = 8, CROP = 20, DONE = 24},
+  {ITEM = 15, SEED = 16, CROP = 28, DONE = 32}
 }
 SIGN = 33
 WALL = 34

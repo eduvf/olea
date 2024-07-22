@@ -13,13 +13,19 @@ function love.load()
 
   game = {
     cam = {x = win.w / 2, y = win.h / 2},
-    map = {},
+    map = {
+      w = win.w / 8 / 6,
+      h = win.h / 8 / 6,
+      ground = {},
+      crops = {},
+      wall = {}
+    },
     time = 0,
     scale = 6,
     actors = {}
   }
 
-  generate_map(win.w / 8 / game.scale, win.h / 8 / game.scale)
+  generate_map()
 
   player = create_actor(CHAR_1, 0, 0)
   add_actor(player)
@@ -27,23 +33,23 @@ function love.load()
   local tree_1 = create_actor(TREES[1], 0, 4, 0, 0, false, 2)
   add_actor(tree_1)
 
-  add_link_actor(tree_1, create_actor(CROPS[3][1], 0, 4, 0.5, 0, false))
-  add_link_actor(tree_1, create_actor(CROPS[3][1], 0, 4, 0, 0.5, false))
-  add_link_actor(tree_1, create_actor(CROPS[3][1], 0, 4, 1, 0.5, false))
+  add_link_actor(tree_1, create_actor(CROPS[2].ITEM, 0, 4, 0.5, 0, false))
+  add_link_actor(tree_1, create_actor(CROPS[2].ITEM, 0, 4, 0, 0.5, false))
+  add_link_actor(tree_1, create_actor(CROPS[2].ITEM, 0, 4, 1, 0.5, false))
 
   local tree_2 = create_actor(TREES[1], 4, 4, 0, 0, false, 2)
   add_actor(tree_2)
 
-  add_link_actor(tree_2, create_actor(CROPS[2][1], 4, 4, 0.5, 0, false))
-  add_link_actor(tree_2, create_actor(CROPS[2][1], 4, 4, 0, 0.5, false))
-  add_link_actor(tree_2, create_actor(CROPS[2][1], 4, 4, 1, 0.5, false))
+  add_link_actor(tree_2, create_actor(CROPS[2].ITEM, 4, 4, 0.5, 0, false))
+  add_link_actor(tree_2, create_actor(CROPS[2].ITEM, 4, 4, 0, 0.5, false))
+  add_link_actor(tree_2, create_actor(CROPS[2].ITEM, 4, 4, 1, 0.5, false))
 
   local tree_3 = create_actor(TREES[2], 8, 4, 0, 0, false, 2)
   add_actor(tree_3)
 
-  add_link_actor(tree_3, create_actor(CROPS[4][1], 8, 4, 0.5, 0, false))
-  add_link_actor(tree_3, create_actor(CROPS[4][1], 8, 4, 0, 0.5, false))
-  add_link_actor(tree_3, create_actor(CROPS[4][1], 8, 4, 1, 0.5, false))
+  add_link_actor(tree_3, create_actor(CROPS[2].ITEM, 8, 4, 0.5, 0, false))
+  add_link_actor(tree_3, create_actor(CROPS[2].ITEM, 8, 4, 0, 0.5, false))
+  add_link_actor(tree_3, create_actor(CROPS[2].ITEM, 8, 4, 1, 0.5, false))
 end
 
 function love.resize()
@@ -76,12 +82,12 @@ function love.keypressed(_, ch)
 
   if ch == 'space' then
     local x, y = player.x + 1, player.y + 1
-    local id = get_from_map(x, y)
+    local id = get_from_map_ground(x, y)
     
     if id == SOIL_DRY then
-      set_into_map(SOIL_WET, x, y)
+      set_into_map_ground(SOIL_WET, x, y)
     else
-      set_into_map(SOIL_DRY, x, y)
+      set_into_map_ground(SOIL_DRY, x, y)
     end
   end
 
