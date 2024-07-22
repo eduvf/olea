@@ -1,3 +1,13 @@
+function harvest_crop(id, x, y)
+  game.map.crops[x][y] = 0
+
+  local a = create_actor(id, x - 1, y - 2, 0, 1, false)
+  a.move = true
+  a.solid = false
+  a.die_on_stop = true
+  add_actor(a)
+end
+
 function farm_action(x, y)
   if not in_range(x, 1, game.map.w) then return end
   if not in_range(y, 1, game.map.h) then return end
@@ -7,9 +17,12 @@ function farm_action(x, y)
 
   if g == SOIL_DRY then
     if c > 0 then
-      if c == CROPS[1].DONE
-      or c == CROPS[2].DONE then
-        game.map.crops[x][y] = 0
+      if c == CROPS[1].DONE then
+        harvest_crop(CROPS[1].ITEM, x, y)
+        return
+      end
+      if c == CROPS[2].DONE then
+        harvest_crop(CROPS[2].ITEM, x, y)
         return
       end
 
