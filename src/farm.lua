@@ -6,6 +6,7 @@ function harvest_crop(id, x, y)
   a.solid = false
   a.die_on_stop = true
   add_actor(a)
+  add_to_inventory(id)
 end
 
 function farm_action(x, y)
@@ -28,7 +29,13 @@ function farm_action(x, y)
 
       game.map.ground[x][y] = SOIL_WET
     else
-      game.map.crops[x][y] = CROPS[1].CROP
+      if current_inventory_item() == CROPS[1].SEED then
+        game.map.crops[x][y] = CROPS[1].CROP
+        remove_from_inventory()
+      elseif current_inventory_item() == CROPS[2].SEED then
+        game.map.crops[x][y] = CROPS[2].CROP
+        remove_from_inventory()
+      end
     end
   elseif g ~= SOIL_WET then
     game.map.ground[x][y] = SOIL_DRY
@@ -60,5 +67,6 @@ function harvest_tree(tree)
     fruit.oy = fruit.y + fruit.oy - game.actors[1].y
     fruit.x = game.actors[1].x
     fruit.y = game.actors[1].y
+    add_to_inventory(fruit.spr)
   end
 end
