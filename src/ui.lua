@@ -7,7 +7,24 @@ function move_inventory_cursor(ch)
     c = c + 1
   end
 
-  game.inventory.cursor = (c - 1) % #game.inventory.items + 1
+  game.inventory.cursor = math.max(1, math.min(c, #game.inventory.items))
+end
+
+function current_inventory_item()
+  return game.inventory.items[game.inventory.cursor]
+end
+
+function add_to_inventory(item)
+  table.insert(game.inventory.items, item)
+end
+
+function remove_from_inventory()
+  if #game.inventory.items == 0 then return end
+
+  local item = table.remove(game.inventory.items, game.inventory.cursor)
+  game.inventory.cursor = math.max(1, math.min(game.inventory.cursor, #game.inventory.items))
+
+  return item
 end
 
 function draw_inventory()

@@ -31,10 +31,10 @@ function love.load()
     }
   }
 
-  table.insert(game.inventory.items, CROPS[1].SEED)
-  table.insert(game.inventory.items, CROPS[1].SEED)
-  table.insert(game.inventory.items, CROPS[2].SEED)
-  table.insert(game.inventory.items, CROPS[2].SEED)
+  add_to_inventory(CROPS[1].SEED)
+  add_to_inventory(CROPS[1].SEED)
+  add_to_inventory(CROPS[2].SEED)
+  add_to_inventory(CROPS[2].SEED)
 
   generate_map()
 
@@ -104,6 +104,9 @@ function love.keypressed(_, ch)
   if ch == 'i' then
     game.inventory.enabled = not game.inventory.enabled
   end
+
+  if ch == 'p' then add_to_inventory(CROPS[random({1, 2})].SEED) end
+  if ch == 'm' then remove_from_inventory() end
 
   if ch == '1' then player.spr = CHAR_1 end
   if ch == '2' then player.spr = CHAR_2 end
