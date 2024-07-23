@@ -3,6 +3,7 @@ function love.load()
   require('src/id')
   require('src/lib')
   require('src/gfx')
+  require('src/ui')
   require('src/map')
   require('src/act')
   require('src/save')
@@ -22,8 +23,18 @@ function love.load()
     },
     time = 0,
     scale = 6,
-    actors = {}
+    actors = {},
+    inventory = {
+      enabled = false,
+      cursor = 1,
+      items = {}
+    }
   }
+
+  table.insert(game.inventory.items, CROPS[1].SEED)
+  table.insert(game.inventory.items, CROPS[1].SEED)
+  table.insert(game.inventory.items, CROPS[2].SEED)
+  table.insert(game.inventory.items, CROPS[2].SEED)
 
   generate_map()
 
@@ -59,32 +70,40 @@ end
 function love.keypressed(_, ch)
   if ch == 'r' then love.event.push('quit', 'restart') end
 
-  local x, y = 0, 0
-  if ch == 'w' or ch == 'up' then y = y - 1 end
-  if ch == 's' or ch == 'down' then y = y + 1 end
-  if ch == 'a' or ch == 'left' then x = x - 1 end
-  if ch == 'd' or ch == 'right' then x = x + 1 end
-
-  local act = check_collision(player, x, y)
-  if act ~= nil then
-    player.ox = player.ox + x / 2
-    player.oy = player.oy + y / 2
-    if act.spr == TREES[1] or act.spr == TREES[2] then
-      harvest_tree(act)
-    end
+  if game.inventory.enabled then
+    move_inventory_cursor(ch)
   else
-    player.x = player.x + x
-    player.y = player.y + y
-    player.ox = player.ox - x
-    player.oy = player.oy - y
-  end
-  player.flip = x == 0 and player.flip or x < 0
+    local x, y = 0, 0
+    if ch == 'w' or ch == 'up' then y = y - 1 end
+    if ch == 's' or ch == 'down' then y = y + 1 end
+    if ch == 'a' or ch == 'left' then x = x - 1 end
+    if ch == 'd' or ch == 'right' then x = x + 1 end
 
-  if ch == 'space' then
-    farm_action(player.x + 1, player.y + 1)
+    local act = check_collision(player, x, y)
+    if act ~= nil then
+      player.ox = player.ox + x / 2
+      player.oy = player.oy + y / 2
+      if act.spr == TREES[1] or act.spr == TREES[2] then
+        harvest_tree(act)
+      end
+    else
+      player.x = player.x + x
+      player.y = player.y + y
+      player.ox = player.ox - x
+      player.oy = player.oy - y
+    end
+    player.flip = x == 0 and player.flip or x < 0
+
+    if ch == 'space' then
+      farm_action(player.x + 1, player.y + 1)
+    end
+
+    if ch == 'n' then next_day() end
   end
 
-  if ch == 'n' then next_day() end
+  if ch == 'i' then
+    game.inventory.enabled = not game.inventory.enabled
+  end
 
   if ch == '1' then player.spr = CHAR_1 end
   if ch == '2' then player.spr = CHAR_2 end
@@ -119,4 +138,8 @@ function love.draw()
   draw_actors()
 
   love.graphics.origin()
+
+  if game.inventory.enabled then
+    draw_inventory()
+  end
 end
