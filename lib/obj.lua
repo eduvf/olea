@@ -23,6 +23,13 @@ function obj_update(dt)
   end
 end
 
+function obj_glide(o, dx, dy)
+  o.x = o.x + dx
+  o.y = o.y + dy
+  o.ox = o.ox - dx
+  o.oy = o.oy - dy
+end
+
 function obj_draw()
   for _, o in ipairs(objects) do
     local n = o.sprite
