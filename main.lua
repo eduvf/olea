@@ -4,12 +4,17 @@ function love.load()
 
   require('lib/gfx')
   gfx_load()
+
+  require('lib/obj')
+  obj_load()
+  player = obj_create(1, 0, 0, true)
 end
 
 function love.update(dt)
+  obj_update(dt)
   time = time + dt
 end
 
 function love.draw()
-  spr(1 + math.floor(time % 2))
+  obj_draw()
 end
