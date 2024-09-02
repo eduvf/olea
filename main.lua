@@ -16,7 +16,7 @@ function love.keypressed(_, ch)
   if ch == 's' or ch == 'down' then y = y + 1 end
   if ch == 'a' or ch == 'left' then x = x - 1 end
   if ch == 'd' or ch == 'right' then x = x + 1 end
-  obj_glide(player, x, y)
+  obj_glide_and_flip(player, x, y)
 end
 
 function love.update(dt)

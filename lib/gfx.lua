@@ -12,6 +12,10 @@ function gfx_load()
   end
 end
 
-function spr(n, x, y)
-  love.graphics.draw(image, quad[n], x, y, 0, scale, scale)
+function spr(n, x, y, flip)
+  local sx, ox = scale, 0
+  if flip then
+    sx, ox = -scale, 8
+  end
+  love.graphics.draw(image, quad[n], x, y, 0, sx, scale, ox)
 end

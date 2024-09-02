@@ -9,6 +9,7 @@ function obj_create(n, x, y, anim)
     y = y,
     ox = 0,
     oy = 0,
+    flip = false,
     animate = false
   }
   if anim then o.animate = true end
@@ -30,6 +31,11 @@ function obj_glide(o, dx, dy)
   o.oy = o.oy - dy
 end
 
+function obj_glide_and_flip(o, dx, dy)
+  obj_glide(o, dx, dy)
+  o.flip = dx == 0 and o.flip or dx < 0
+end
+
 function obj_draw()
   for _, o in ipairs(objects) do
     local n = o.sprite
@@ -40,6 +46,6 @@ function obj_draw()
     local x = (o.x + o.ox) * 8 * scale
     local y = (o.y + o.oy) * 8 * scale
 
-    spr(n, x, y)
+    spr(n, x, y, o.flip)
   end
 end
