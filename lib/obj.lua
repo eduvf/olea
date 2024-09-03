@@ -2,13 +2,14 @@ function obj_load()
   objects = {}
 end
 
-function obj_create(n, x, y, anim)
+function obj_create(n, x, y, size, anim)
   local o = {
     sprite = n,
     x = x,
     y = y,
     ox = 0,
     oy = 0,
+    size = size or 1,
     flip = false,
     animate = false
   }
@@ -37,6 +38,8 @@ function obj_glide_and_flip(o, dx, dy)
 end
 
 function obj_draw()
+  local tile = 8 * scale
+
   for _, o in ipairs(objects) do
     local n = o.sprite
     if o.animate then
@@ -47,5 +50,10 @@ function obj_draw()
     local y = (o.y + o.oy) * 8 * scale
 
     spr(n, x, y, o.flip)
+    if o.size > 1 then
+      spr(n + 8, x, y + tile)
+      spr(n + 1, x + tile, y)
+      spr(n + 9, x + tile, y + tile)
+    end
   end
 end
