@@ -2,7 +2,7 @@ function obj_load()
   objects = {}
 end
 
-function obj_create(n, x, y, size, dynamic, solid)
+function obj_create(n, x, y, size, dynamic, solid, front)
   local o = {
     sprite = n,
     x = x,
@@ -11,24 +11,22 @@ function obj_create(n, x, y, size, dynamic, solid)
     oy = 0,
     size = size or 1,
     flip = false,
-    move = false,
-    solid = false,
-    animate = false,
-    die_on_stop = false
+    move = dynamic or false,
+    anim = dynamic or false,
+    solid = solid or false,
+    die_on_stop = false,
+    always_in_front = front or false
   }
-  if dynamic then
-    o.move = true
-    o.animate = true
-  end
-  if solid then
-    o.solid = true
-  end
   table.insert(objects, o)
   return o
 end
 
 function obj_set_sprite(o, n)
   o.sprite = n
+end
+
+function obj_always_in_front(o)
+  o.always_in_front = true
 end
 
 function obj_update(dt)
@@ -79,23 +77,36 @@ function obj_check_collision(obj, dx, dy)
   end
 end
 
-function obj_draw()
+function obj_draw_single(o)
   local tile = 8 * scale
+  local n = o.sprite
+  if o.anim then
+    n = n + math.floor(time % 2)
+  end
+
+  local x = (o.x + o.ox) * tile
+  local y = (o.y + o.oy) * tile
+
+  spr(n, x, y, o.flip)
+  if o.size > 1 then
+    spr(n + 8, x, y + tile)
+    spr(n + 1, x + tile, y)
+    spr(n + 9, x + tile, y + tile)
+  end
+end
+
+function obj_draw()
+  local front = {}
 
   for _, o in ipairs(objects) do
-    local n = o.sprite
-    if o.animate then
-      n = n + math.floor(time % 2)
+    if o.always_in_front then
+      table.insert(front, o)
+    else
+      obj_draw_single(o)
     end
-    
-    local x = (o.x + o.ox) * 8 * scale
-    local y = (o.y + o.oy) * 8 * scale
+  end
 
-    spr(n, x, y, o.flip)
-    if o.size > 1 then
-      spr(n + 8, x, y + tile)
-      spr(n + 1, x + tile, y)
-      spr(n + 9, x + tile, y + tile)
-    end
+  for _, o in ipairs(front) do
+    obj_draw_single(o)
   end
 end

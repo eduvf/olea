@@ -6,9 +6,9 @@ function farm_create_tree(x, y, fruit)
   local tree = obj_create(17, x, y, 2, false, true)
   tree.is_tree = true
   tree.has = {
-    obj_create(fruit, x + 0.5, y),
-    obj_create(fruit, x, y + 0.5),
-    obj_create(fruit, x + 1, y + 0.5)
+    obj_create(fruit, x + 0.5, y, 1, false, false, true),
+    obj_create(fruit, x, y + 0.5, 1, false, false, true),
+    obj_create(fruit, x + 1, y + 0.5, 1, false, false, true)
   }
   return tree
 end
@@ -55,6 +55,7 @@ function farm_till_plant_water_harvest(x, y)
     soil.growth = 0
     obj_set_sprite(soil.crop, soil.seed + 7)
     obj_glide_and_die(soil.crop, 0, -1)
+    obj_always_in_front(soil.crop)
   elseif not soil.is_wet then
     -- water crop
     soil.is_wet = true

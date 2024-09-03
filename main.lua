@@ -8,7 +8,7 @@ function love.load()
 
   require('lib/obj')
   obj_load()
-  player = obj_create(1, 0, 0, 1, true)
+  player = obj_create(1, 0, 0, 1, true, false, true)
   
   require('lib/farm')
   farm_load()
