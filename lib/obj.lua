@@ -2,7 +2,7 @@ function obj_load()
   objects = {}
 end
 
-function obj_create(n, x, y, size, anim)
+function obj_create(n, x, y, size, dynamic)
   local o = {
     sprite = n,
     x = x,
@@ -11,18 +11,29 @@ function obj_create(n, x, y, size, anim)
     oy = 0,
     size = size or 1,
     flip = false,
+    move = false,
     solid = true,
-    animate = false
+    animate = false,
+    die_on_stop = false
   }
-  if anim then o.animate = true end
+  if dynamic then
+    o.move = true
+    o.animate = true
+  end
   table.insert(objects, o)
   return o
 end
 
 function obj_update(dt)
-  for _, o in ipairs(objects) do
-    o.ox = o.ox * (0.95 - dt)
-    o.oy = o.oy * (0.95 - dt)
+  for i, o in ipairs(objects) do
+    if o.move then
+      o.ox = o.ox * (0.95 - dt)
+      o.oy = o.oy * (0.95 - dt)
+
+      if o.die_on_stop and math.abs(o.ox) + math.abs(o.oy) < 0.01 then
+        table.remove(objects, i)
+      end
+    end
   end
 end
 
@@ -36,6 +47,12 @@ end
 function obj_glide_and_flip(o, dx, dy)
   obj_glide(o, dx, dy)
   o.flip = dx == 0 and o.flip or dx < 0
+end
+
+function obj_glide_and_die(o, dx, dy)
+  obj_glide(o, dx, dy)
+  o.move = true
+  o.die_on_stop = true
 end
 
 function obj_bump(o, dx, dy)

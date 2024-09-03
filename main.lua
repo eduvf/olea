@@ -8,7 +8,9 @@ function love.load()
   require('lib/obj')
   obj_load()
   player = obj_create(1, 0, 0, 1, true)
-  obj_create(17, 2, 2, 2)
+  
+  require('lib/farm')
+  farm_create_tree(2, 2, 9)
 end
 
 function love.keypressed(_, ch)
@@ -21,6 +23,9 @@ function love.keypressed(_, ch)
   local o = obj_check_collision(player, x, y)
   if o ~= nil then
     obj_bump(player, x, y)
+    if farm_is_tree(o) and farm_has_fruit(o) then
+      farm_collect_fruit(player, o)
+    end
   else
     obj_glide_and_flip(player, x, y)
   end
