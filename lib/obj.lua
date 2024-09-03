@@ -2,7 +2,7 @@ function obj_load()
   objects = {}
 end
 
-function obj_create(n, x, y, size, dynamic)
+function obj_create(n, x, y, size, dynamic, solid)
   local o = {
     sprite = n,
     x = x,
@@ -12,7 +12,7 @@ function obj_create(n, x, y, size, dynamic)
     size = size or 1,
     flip = false,
     move = false,
-    solid = true,
+    solid = false,
     animate = false,
     die_on_stop = false
   }
@@ -20,8 +20,15 @@ function obj_create(n, x, y, size, dynamic)
     o.move = true
     o.animate = true
   end
+  if solid then
+    o.solid = true
+  end
   table.insert(objects, o)
   return o
+end
+
+function obj_set_sprite(o, n)
+  o.sprite = n
 end
 
 function obj_update(dt)

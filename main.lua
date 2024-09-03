@@ -11,6 +11,7 @@ function love.load()
   player = obj_create(1, 0, 0, 1, true)
   
   require('lib/farm')
+  farm_load()
   farm_create_tree(2, 2, 9)
 end
 
@@ -29,6 +30,13 @@ function love.keypressed(_, ch)
     end
   else
     obj_glide_and_flip(player, x, y)
+  end
+
+  if ch == 'space' then
+    farm_till_plant_water_harvest(player.x, player.y)
+  end
+  if ch == 'g' then
+    farm_grow_crops()
   end
 end
 
