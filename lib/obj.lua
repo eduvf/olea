@@ -50,7 +50,7 @@ function obj_check_collision(obj, dx, dy)
       local y = obj.y + dy
       local cx = o.x == x - (x % o.size)
       local cy = o.y == y - (y % o.size)
-      if cx and cy then return obj end
+      if cx and cy then return o end
     end
   end
 end
