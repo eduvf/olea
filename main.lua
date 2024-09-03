@@ -1,6 +1,7 @@
 function love.load()
   scale = 6
   time = 0
+  cam = { x = 0, y = 0 }
 
   require('lib/gfx')
   gfx_load()
@@ -33,9 +34,15 @@ end
 
 function love.update(dt)
   obj_update(dt)
+
+  local wx, wy = love.graphics.getDimensions()
+  cam.x = cam.x + (wx / 2 - 4 * scale - player.x * 8 * scale - cam.x) * 0.01
+  cam.y = cam.y + (wy / 2 - 4 * scale - player.y * 8 * scale - cam.y) * 0.01
+
   time = time + dt
 end
 
 function love.draw()
+  love.graphics.translate(cam.x, cam.y)
   obj_draw()
 end
