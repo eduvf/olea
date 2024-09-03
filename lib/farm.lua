@@ -1,5 +1,10 @@
 function farm_load()
   field = {}
+  max_growth_per_crop = {
+    [41] = 5,
+    [49] = 6,
+    [57] = 4
+  }
 end
 
 function farm_create_tree(x, y, fruit)
@@ -46,9 +51,9 @@ function farm_till_plant_water_harvest(x, y)
     table.insert(field, soil)
   elseif soil.growth == 0 then
     -- plant seed
-    soil.seed = 41
+    soil.seed = ({41, 49, 57})[math.random(3)]
     soil.growth = 1
-    soil.max_growth = 5
+    soil.max_growth = max_growth_per_crop[soil.seed]
     soil.crop = obj_create(soil.seed + 1, x, y)
   elseif soil.growth == soil.max_growth then
     -- harvest
