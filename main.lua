@@ -44,8 +44,8 @@ function love.update(dt)
   obj_update(dt)
 
   local wx, wy = love.graphics.getDimensions()
-  cam.x = cam.x + (wx / 2 - 4 * scale - player.x * 8 * scale - cam.x) * 0.01
-  cam.y = cam.y + (wy / 2 - 4 * scale - player.y * 8 * scale - cam.y) * 0.01
+  cam.x = cam.x + (wx / 2 - 4 * scale - player.x * 8 * scale - cam.x) * 0.8 * dt
+  cam.y = cam.y + (wy / 2 - 4 * scale - player.y * 8 * scale - cam.y) * 0.8 * dt
 
   time = time + dt
 end

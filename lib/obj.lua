@@ -32,8 +32,8 @@ end
 function obj_update(dt)
   for i, o in ipairs(objects) do
     if o.move then
-      o.ox = o.ox * (0.95 - dt)
-      o.oy = o.oy * (0.95 - dt)
+      o.ox = o.ox - (o.ox / 2) * 16 * dt
+      o.oy = o.oy - (o.oy / 2) * 16 * dt
 
       if o.die_on_stop and math.abs(o.ox) + math.abs(o.oy) < 0.01 then
         table.remove(objects, i)
