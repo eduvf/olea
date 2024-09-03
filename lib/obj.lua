@@ -25,6 +25,10 @@ function obj_set_sprite(o, n)
   o.sprite = n
 end
 
+function obj_set_flip(o, f)
+  o.flip = f or false
+end
+
 function obj_always_in_front(o)
   o.always_in_front = true
 end

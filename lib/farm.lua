@@ -55,9 +55,11 @@ function farm_till_plant_water_harvest(x, y)
     soil.growth = 1
     soil.max_growth = max_growth_per_crop[soil.seed]
     soil.crop = obj_create(soil.seed + 1, x, y)
+    obj_set_flip(soil.crop, math.random() < 0.5)
   elseif soil.growth == soil.max_growth then
     -- harvest
     soil.growth = 0
+    obj_set_flip(soil.crop)
     obj_set_sprite(soil.crop, soil.seed + 7)
     obj_glide_and_die(soil.crop, 0, -1)
     obj_always_in_front(soil.crop)
