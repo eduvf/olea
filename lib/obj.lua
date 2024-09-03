@@ -11,6 +11,7 @@ function obj_create(n, x, y, size, anim)
     oy = 0,
     size = size or 1,
     flip = false,
+    solid = true,
     animate = false
   }
   if anim then o.animate = true end
@@ -35,6 +36,23 @@ end
 function obj_glide_and_flip(o, dx, dy)
   obj_glide(o, dx, dy)
   o.flip = dx == 0 and o.flip or dx < 0
+end
+
+function obj_bump(o, dx, dy)
+  o.ox = o.ox + dx / 2
+  o.oy = o.oy + dy / 2
+end
+
+function obj_check_collision(obj, dx, dy)
+  for _, o in ipairs(objects) do
+    if obj ~= o and o.solid then
+      local x = obj.x + dx
+      local y = obj.y + dy
+      local cx = o.x == x - (x % o.size)
+      local cy = o.y == y - (y % o.size)
+      if cx and cy then return obj end
+    end
+  end
 end
 
 function obj_draw()

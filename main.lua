@@ -17,7 +17,13 @@ function love.keypressed(_, ch)
   if ch == 's' or ch == 'down' then y = y + 1 end
   if ch == 'a' or ch == 'left' then x = x - 1 end
   if ch == 'd' or ch == 'right' then x = x + 1 end
-  obj_glide_and_flip(player, x, y)
+  
+  local o = obj_check_collision(player, x, y)
+  if o ~= nil then
+    obj_bump(player, x, y)
+  else
+    obj_glide_and_flip(player, x, y)
+  end
 end
 
 function love.update(dt)
