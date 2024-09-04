@@ -31,7 +31,9 @@ function farm_collect_fruit(p, tree)
     local x = p.x - f.x
     local y = p.y - f.y
     obj_glide_and_die(f, x, y)
+    inv_add(obj_get_sprite(f))
   end
+  tree.has = {}
 end
 
 function farm_till_plant_water_harvest(x, y)
@@ -51,14 +53,17 @@ function farm_till_plant_water_harvest(x, y)
     table.insert(field, soil)
   elseif soil.growth == 0 then
     -- plant seed
-    soil.seed = ({41, 49, 57})[math.random(3)]
-    soil.growth = 1
-    soil.max_growth = max_growth_per_crop[soil.seed]
-    soil.crop = obj_create(soil.seed + 1, x, y)
-    obj_set_flip(soil.crop, math.random() < 0.5)
+    if max_growth_per_crop[inv_current_item()] then
+      soil.seed = inv_remove()
+      soil.growth = 1
+      soil.max_growth = max_growth_per_crop[soil.seed]
+      soil.crop = obj_create(soil.seed + 1, x, y)
+      obj_set_flip(soil.crop, math.random() < 0.5)
+    end
   elseif soil.growth == soil.max_growth then
     -- harvest
     soil.growth = 0
+    inv_add(soil.seed + 7)
     obj_set_flip(soil.crop)
     obj_set_sprite(soil.crop, soil.seed + 7)
     obj_glide_and_die(soil.crop, 0, -1)

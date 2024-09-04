@@ -21,6 +21,10 @@ function obj_create(n, x, y, size, dynamic, solid, front)
   return o
 end
 
+function obj_get_sprite(o)
+  return o.sprite
+end
+
 function obj_set_sprite(o, n)
   o.sprite = n
 end

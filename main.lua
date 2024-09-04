@@ -12,9 +12,9 @@ function love.load()
   
   require('lib/inv')
   inv_load()
-  inv_add(9)
-  inv_add(10)
-  inv_add(11)
+  inv_add(41)
+  inv_add(49)
+  inv_add(57)
 
   require('lib/farm')
   farm_load()

@@ -6,7 +6,9 @@ function inv_load()
 end
 
 function inv_move_cursor(dx)
-  cursor = (cursor - 1 + dx) % #inventory + 1
+  if #inventory > 0 then
+    cursor = (cursor - 1 + dx) % #inventory + 1
+  end
 end
 
 function inv_update(dt)
@@ -19,8 +21,14 @@ function inv_add(item)
   end
 end
 
+function inv_current_item()
+  return inventory[cursor]
+end
+
 function inv_remove()
-  return table.remove(inventory, cursor)
+  local item = table.remove(inventory, cursor)
+  cursor = math.min(cursor, #inventory)
+  return item
 end
 
 function inv_draw()
