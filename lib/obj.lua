@@ -78,8 +78,8 @@ function obj_check_collision(obj, dx, dy)
     if obj ~= o and o.solid then
       local x = obj.x + dx
       local y = obj.y + dy
-      local cx = o.x == x - (x % o.size)
-      local cy = o.y == y - (y % o.size)
+      local cx = o.x == x - (o.x - x) % o.size
+      local cy = o.y == y - (o.y - y) % o.size
       if cx and cy then return o end
     end
   end

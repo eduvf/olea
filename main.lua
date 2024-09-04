@@ -19,6 +19,8 @@ function love.load()
   require('lib/farm')
   farm_load()
   farm_create_tree(2, 2, 9)
+  farm_create_tree(5, 2, 10)
+  farm_create_tree(8, 2, 11)
 end
 
 function love.keypressed(_, ch)

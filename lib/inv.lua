@@ -1,6 +1,6 @@
 function inv_load()
   inventory = {}
-  max_items = 8
+  max_items = 32
   cursor = 1
   cursor_offset = 1
 end
