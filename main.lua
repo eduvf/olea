@@ -10,6 +10,12 @@ function love.load()
   obj_load()
   player = obj_create(1, 0, 0, 1, true, false, true)
   
+  require('lib/inv')
+  inv_load()
+  inv_add(9)
+  inv_add(10)
+  inv_add(11)
+
   require('lib/farm')
   farm_load()
   farm_create_tree(2, 2, 9)
@@ -21,7 +27,12 @@ function love.keypressed(_, ch)
   if ch == 's' or ch == 'down' then y = y + 1 end
   if ch == 'a' or ch == 'left' then x = x - 1 end
   if ch == 'd' or ch == 'right' then x = x + 1 end
-  
+
+  if love.keyboard.isDown('i') then
+    inv_move_cursor(x)
+    return
+  end
+
   local o = obj_check_collision(player, x, y)
   if o ~= nil then
     obj_bump(player, x, y)
@@ -42,6 +53,7 @@ end
 
 function love.update(dt)
   obj_update(dt)
+  inv_update(dt)
 
   local wx, wy = love.graphics.getDimensions()
   cam.x = cam.x + (wx / 2 - 4 * scale - player.x * 8 * scale - cam.x) * 0.8 * dt
@@ -53,4 +65,8 @@ end
 function love.draw()
   love.graphics.translate(cam.x, cam.y)
   obj_draw()
+  love.graphics.origin()
+  if love.keyboard.isDown('i') then
+    inv_draw()
+  end
 end

@@ -19,3 +19,10 @@ function spr(n, x, y, flip)
   end
   love.graphics.draw(image, quad[n], x, y, 0, sx, scale, ox)
 end
+
+function gfx_fade(alpha)
+  local w, h = love.graphics.getDimensions()
+  love.graphics.setColor(0, 0, 0, alpha)
+  love.graphics.rectangle('fill', 0, 0, w, h)
+  love.graphics.setColor(1, 1, 1)
+end
