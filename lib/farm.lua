@@ -19,7 +19,7 @@ function farm_create_tree(x, y, fruit)
 end
 
 function farm_is_tree(o)
-  if o ~= nil then return o.is_tree end
+  return o.is_tree
 end
 
 function farm_has_fruit(tree)
