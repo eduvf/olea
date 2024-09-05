@@ -9,7 +9,33 @@ function love.load()
   require('lib/obj')
   obj_load()
   player = obj_create(1, 0, 0, 1, true, false, true)
-  
+
+  obj_create(23, 4, -6, 1, false, true)
+  obj_create(23, 5, -6, 1, false, true)
+  obj_create(23, 6, -6, 1, false, true)
+  obj_create(23, 7, -6, 1, false, true)
+  obj_create(23, 8, -6, 1, false, true)
+  obj_create(23, 4, -5, 1, false, true)
+  obj_create(23, 4, -4, 1, false, true)
+  obj_create(23, 4, -3, 1, false, true)
+  obj_create(23, 4, -2, 1, false, true)
+  obj_create(23, 5, -2, 1, false, true)
+  obj_create(23, 6, -2, 1, false, true)
+  obj_create(23, 8, -5, 1, false, true)
+  obj_create(23, 8, -4, 1, false, true)
+  obj_create(23, 8, -3, 1, false, true)
+  obj_create(23, 8, -2, 1, false, true)
+
+  local bed = obj_create(29, 6, -5, 1, false, true)
+  local door = obj_create(21, 7, -2, 1, false, false)
+  local sign = obj_create(24, 8, -1, 1, false, true)
+  local table = obj_create(31, 5, -3, 1, false, true)
+  local chest = obj_create(32, 7, -5, 1, false, true)
+  local closet = obj_create(30, 5, -5, 1, false, true)
+
+  obj_set_tag(bed, 'bed')
+  obj_set_tag(closet, 'closet')
+
   require('lib/inv')
   inv_load()
   inv_add(41)
@@ -40,6 +66,11 @@ function love.keypressed(_, ch)
     obj_bump(player, x, y)
     if farm_is_tree(o) and farm_has_fruit(o) then
       farm_collect_fruit(player, o)
+    elseif obj_get_tag(o) == 'bed' then
+      farm_grow_crops()
+    elseif obj_get_tag(o) == 'closet' then
+      local n = (obj_get_sprite(player) + 2) % 8
+      obj_set_sprite(player, n)
     end
   else
     obj_glide_and_flip(player, x, y)

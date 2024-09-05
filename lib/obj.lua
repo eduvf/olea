@@ -15,7 +15,8 @@ function obj_create(n, x, y, size, dynamic, solid, front)
     anim = dynamic or false,
     solid = solid or false,
     die_on_stop = false,
-    always_in_front = front or false
+    always_in_front = front or false,
+    tag = ''
   }
   table.insert(objects, o)
   return o
@@ -27,6 +28,14 @@ end
 
 function obj_set_sprite(o, n)
   o.sprite = n
+end
+
+function obj_get_tag(o)
+  return o.tag
+end
+
+function obj_set_tag(o, tag)
+  o.tag = tag
 end
 
 function obj_set_flip(o, f)
