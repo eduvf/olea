@@ -1,6 +1,14 @@
 function gfx_load()
   love.graphics.setDefaultFilter('nearest')
 
+  local char_set = (
+    ' !"#$%&\'()*+,-./' ..
+    '0123456789:;<=>?' ..
+    '@abcdefghijklmno' ..
+    'pqrstuvwxyz')
+  font = love.graphics.newImageFont('font.png', char_set, 1)
+  love.graphics.setFont(font)
+
   image = love.graphics.newImage('gfx.png')
   quad = {}
   local w, h = image:getDimensions()
