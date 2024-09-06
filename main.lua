@@ -34,7 +34,11 @@ function love.load()
   local closet = obj_create(30, 5, -5, 1, false, true)
 
   obj_set_tag(bed, 'bed')
+  obj_set_tag(sign, 'sign')
   obj_set_tag(closet, 'closet')
+
+  require('lib/dlg')
+  dlg_load()
 
   require('lib/inv')
   inv_load()
@@ -56,6 +60,11 @@ function love.keypressed(_, ch)
   if ch == 'a' or ch == 'left' then x = x - 1 end
   if ch == 'd' or ch == 'right' then x = x + 1 end
 
+  if dlg_is_dialog_open() then
+    dlg_close()
+    return
+  end
+
   if love.keyboard.isDown('i') then
     inv_move_cursor(x)
     return
@@ -68,6 +77,8 @@ function love.keypressed(_, ch)
       farm_collect_fruit(player, o)
     elseif obj_get_tag(o) == 'bed' then
       farm_grow_crops()
+    elseif obj_get_tag(o) == 'sign' then
+      dlg_open('im a sign!')
     elseif obj_get_tag(o) == 'closet' then
       local n = (obj_get_sprite(player) + 2) % 8
       obj_set_sprite(player, n)
@@ -101,5 +112,8 @@ function love.draw()
   love.graphics.origin()
   if love.keyboard.isDown('i') then
     inv_draw()
+  end
+  if dlg_is_dialog_open() then
+    dlg_draw()
   end
 end
