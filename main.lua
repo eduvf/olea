@@ -78,7 +78,7 @@ function love.keypressed(_, ch)
     elseif obj_get_tag(o) == 'bed' then
       farm_grow_crops()
     elseif obj_get_tag(o) == 'sign' then
-      dlg_open('im a sign!')
+      dlg_open('im a sign!\n\nthis is a test house, so take care of it, okay?')
     elseif obj_get_tag(o) == 'closet' then
       local n = (obj_get_sprite(player) + 2) % 8
       obj_set_sprite(player, n)
@@ -98,6 +98,7 @@ end
 function love.update(dt)
   obj_update(dt)
   inv_update(dt)
+  dlg_update()
 
   local wx, wy = love.graphics.getDimensions()
   cam.x = cam.x + (wx / 2 - 4 * scale - player.x * 8 * scale - cam.x) * 0.8 * dt
