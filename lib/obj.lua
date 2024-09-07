@@ -16,6 +16,7 @@ function obj_create(n, x, y, size, dynamic, solid, front)
     solid = solid or false,
     die_on_stop = false,
     always_in_front = front or false,
+    sprite_on_top = 0,
     tag = ''
   }
   table.insert(objects, o)
@@ -28,6 +29,20 @@ end
 
 function obj_set_sprite(o, n)
   o.sprite = n
+end
+
+function obj_has_sprite_on_top(o)
+  return o.sprite_on_top > 0
+end
+
+function obj_set_sprite_on_top(o, n)
+  o.sprite_on_top = n
+end
+
+function obj_remove_sprite_on_top(o)
+  local n = o.sprite_on_top
+  o.sprite_on_top = 0
+  return n
 end
 
 function obj_get_tag(o)
@@ -109,6 +124,10 @@ function obj_draw_single(o)
     spr(n + 8, x, y + tile)
     spr(n + 1, x + tile, y)
     spr(n + 9, x + tile, y + tile)
+  end
+
+  if o.sprite_on_top > 0 then
+    spr(o.sprite_on_top, x, y, o.flip)
   end
 end
 
