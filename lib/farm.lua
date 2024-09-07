@@ -57,17 +57,16 @@ function farm_till_plant_water_harvest(x, y)
       soil.seed = inv_remove()
       soil.growth = 1
       soil.max_growth = max_growth_per_crop[soil.seed]
-      soil.crop = obj_create(soil.seed + 1, x, y)
-      obj_set_flip(soil.crop, math.random() < 0.5)
+      obj_set_sprite_on_top(soil, soil.seed + 1)
+      obj_set_flip(soil, math.random() < 0.5)
     end
   elseif soil.growth == soil.max_growth then
     -- harvest
     soil.growth = 0
-    inv_add(soil.seed + 7)
-    obj_set_flip(soil.crop)
-    obj_set_sprite(soil.crop, soil.seed + 7)
-    obj_glide_and_die(soil.crop, 0, -1)
-    obj_always_in_front(soil.crop)
+    obj_remove_sprite_on_top(soil)
+    local crop = obj_create(soil.seed + 7, soil.x, soil.y)
+    inv_add(obj_get_sprite(crop))
+    obj_glide_and_die(crop, 0, -1)
   elseif not soil.is_wet then
     -- water crop
     soil.is_wet = true
@@ -81,7 +80,7 @@ function farm_grow_crops()
       soil.is_wet = false
       obj_set_sprite(soil, 33)
       soil.growth = math.min(soil.growth + 1, soil.max_growth)
-      obj_set_sprite(soil.crop, soil.seed + soil.growth)
+      obj_set_sprite_on_top(soil, soil.seed + soil.growth)
     end
   end
 end
