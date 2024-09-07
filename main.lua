@@ -3,6 +3,8 @@ function love.load()
   time = 0
   cam = { x = 0, y = 0 }
 
+  math.randomseed(os.time())
+
   require('lib/gfx')
   gfx_load()
 
