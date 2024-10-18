@@ -63,7 +63,6 @@ function spr(n, x, y, flip)
   if flip then
     sx, ox = -scale, 8
   end
-  print(n)
   love.graphics.draw(image, quad[n], x, y, 0, sx, scale, ox)
 end
 
