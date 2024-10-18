@@ -1,17 +1,17 @@
 function farm_load()
   field = {}
   max_growth_per_crop = {
-    [81] = 5,
-    [89] = 4,
-    [97] = 5,
-    [105] = 5,
-    [113] = 6,
-    [121] = 6
+    [id_wheat] = 5,
+    [id_parsnip] = 4,
+    [id_potato] = 5,
+    [id_carrot] = 5,
+    [id_corn] = 6,
+    [id_tomato] = 6
   }
 end
 
 function farm_create_tree(x, y, fruit)
-  local tree = obj_create(17, x, y, 2, false, true)
+  local tree = obj_create(id_tree, x, y, 2, false, true)
   tree.is_tree = true
   tree.has = {
     obj_create(fruit, x + 0.5, y, 1, false, false, true),
@@ -50,7 +50,7 @@ function farm_till_plant_water_harvest(x, y)
 
   if soil == nil then
     -- till soil
-    soil = obj_create(73, x, y)
+    soil = obj_create(id_soil_dry, x, y)
     soil.is_wet = false
     soil.growth = 0
     table.insert(field, soil)
@@ -73,7 +73,7 @@ function farm_till_plant_water_harvest(x, y)
   elseif not soil.is_wet then
     -- water crop
     soil.is_wet = true
-    obj_set_sprite(soil, 74)
+    obj_set_sprite(soil, id_soil_wet)
   end
 end
 
@@ -81,7 +81,7 @@ function farm_grow_crops()
   for _, soil in ipairs(field) do
     if soil.is_wet and soil.growth < soil.max_growth then
       soil.is_wet = false
-      obj_set_sprite(soil, 73)
+      obj_set_sprite(soil, id_soil_dry)
       soil.growth = math.min(soil.growth + 1, soil.max_growth)
       obj_set_sprite_on_top(soil, soil.seed + soil.growth)
     end
