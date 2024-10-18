@@ -45,15 +45,15 @@ function love.load()
 
   require('lib/inv')
   inv_load()
-  inv_add(41)
-  inv_add(49)
-  inv_add(57)
+  inv_add(81)
+  inv_add(89)
+  inv_add(121)
 
   require('lib/farm')
   farm_load()
-  farm_create_tree(2, 2, 9)
-  farm_create_tree(5, 2, 10)
-  farm_create_tree(8, 2, 11)
+  farm_create_tree(2, 2, 52)
+  farm_create_tree(5, 2, 56)
+  farm_create_tree(8, 2, 64)
 end
 
 function love.keypressed(_, ch)

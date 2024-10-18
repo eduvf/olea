@@ -1,9 +1,12 @@
 function farm_load()
   field = {}
   max_growth_per_crop = {
-    [41] = 5,
-    [49] = 6,
-    [57] = 4
+    [81] = 5,
+    [89] = 4,
+    [97] = 5,
+    [105] = 5,
+    [113] = 6,
+    [121] = 6
   }
 end
 
@@ -47,7 +50,7 @@ function farm_till_plant_water_harvest(x, y)
 
   if soil == nil then
     -- till soil
-    soil = obj_create(33, x, y)
+    soil = obj_create(73, x, y)
     soil.is_wet = false
     soil.growth = 0
     table.insert(field, soil)
@@ -70,7 +73,7 @@ function farm_till_plant_water_harvest(x, y)
   elseif not soil.is_wet then
     -- water crop
     soil.is_wet = true
-    obj_set_sprite(soil, 34)
+    obj_set_sprite(soil, 74)
   end
 end
 
@@ -78,7 +81,7 @@ function farm_grow_crops()
   for _, soil in ipairs(field) do
     if soil.is_wet and soil.growth < soil.max_growth then
       soil.is_wet = false
-      obj_set_sprite(soil, 33)
+      obj_set_sprite(soil, 73)
       soil.growth = math.min(soil.growth + 1, soil.max_growth)
       obj_set_sprite_on_top(soil, soil.seed + soil.growth)
     end
