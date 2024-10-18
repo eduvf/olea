@@ -26,8 +26,12 @@ function dlg_open(m)
 end
 
 function dlg_close()
-  open_dialog = false
-  dlg_load()
+  if #message_to == #message_from then
+    open_dialog = false
+    dlg_load()
+  else
+    message_to = message_from
+  end
 end
 
 function dlg_draw()
